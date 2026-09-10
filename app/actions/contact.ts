@@ -53,7 +53,8 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
 
   const resend = new Resend(apiKey)
   const domain = process.env.RESEND_EMAIL_DOMAIN
-  const from = domain ? `${siteConfig.brand.shortName} <noreply@${domain}>` : `${siteConfig.brand.shortName} <onboarding@resend.dev>`
+  const sandboxFrom = `${siteConfig.brand.shortName} <onboarding@resend.dev>`
+  const brandedFrom = domain ? `${siteConfig.brand.shortName} <noreply@${domain}>` : null
   const to = process.env.CONTACT_TO_EMAIL ?? siteConfig.formRecipient
 
   const html = `
@@ -67,17 +68,29 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
     <p style="font-family:system-ui,sans-serif;font-size:12px;color:#888;margin-top:24px">Согласие на обработку персональных данных: подтверждено.</p>
   `
 
-  const { error } = await resend.emails.send(
-    {
-      from,
-      to: [to],
-      replyTo: email,
-      subject: `Запрос с сайта: ${name}`,
-      html,
-      text: `Имя: ${name}\nEmail: ${email}\nТелефон: ${phone}\n\n${message}\n\nСогласие на обработку ПД: подтверждено.`,
-    },
+  const payload = {
+    to: [to],
+    replyTo: email,
+    subject: `Запрос с сайта: ${name}`,
+    html,
+    text: `Имя: ${name}\nEmail: ${email}\nТелефон: ${phone}\n\n${message}\n\nСогласие на обработку ПД: подтверждено.`,
+  }
+
+  let { error } = await resend.emails.send(
+    { from: brandedFrom ?? sandboxFrom, ...payload },
     submissionId ? { idempotencyKey: `contact-form/${submissionId}` } : undefined,
   )
+
+  // The integration's domain may not be DNS-verified yet; fall back to Resend's
+  // sandbox sender so the form keeps working until verification completes.
+  if (error && brandedFrom && error.name === 'validation_error' && /not verified/i.test(error.message)) {
+    console.warn(`Resend: domain ${domain} is not verified, falling back to ${sandboxFrom}`)
+    const retry = await resend.emails.send(
+      { from: sandboxFrom, ...payload },
+      submissionId ? { idempotencyKey: `contact-form-sandbox/${submissionId}` } : undefined,
+    )
+    error = retry.error
+  }
 
   if (error) {
     console.error('Resend error:', error.message)

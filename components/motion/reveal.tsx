@@ -1,10 +1,26 @@
 'use client'
 
 import { motion, useReducedMotion, type Variants } from 'motion/react'
-import type { ComponentPropsWithoutRef, ElementType } from 'react'
+import { useMemo, type ComponentPropsWithoutRef, type ElementType } from 'react'
 import { cn } from '@/lib/utils'
 
 const EASE = [0.16, 1, 0.3, 1] as const
+
+type AnyMotion = typeof motion.div
+
+const motionCache = new Map<ElementType, AnyMotion>()
+
+/** motion.create() must not run on every render — cache one component per tag. */
+function useMotionTag(tag: ElementType): AnyMotion {
+  return useMemo(() => {
+    let cached = motionCache.get(tag)
+    if (!cached) {
+      cached = motion.create(tag as keyof React.JSX.IntrinsicElements) as unknown as AnyMotion
+      motionCache.set(tag, cached)
+    }
+    return cached
+  }, [tag])
+}
 
 type RevealProps<T extends ElementType> = {
   as?: T
@@ -29,7 +45,7 @@ export function Reveal<T extends ElementType = 'div'>({
   ...rest
 }: RevealProps<T>) {
   const reduce = useReducedMotion()
-  const Component = motion.create((as ?? 'div') as ElementType)
+  const Component = useMotionTag((as ?? 'div') as ElementType)
   return (
     <Component
       initial={{ opacity: 0, y: reduce ? 0 : y }}
@@ -60,7 +76,7 @@ export function Stagger({
   amount?: number
   as?: 'div' | 'ul' | 'ol' | 'section'
 }) {
-  const Component = motion.create(as)
+  const Component = useMotionTag(as)
   return (
     <Component
       variants={staggerContainer}
@@ -86,7 +102,7 @@ export function StaggerItem({
   y?: number
 }) {
   const reduce = useReducedMotion()
-  const Component = motion.create(as)
+  const Component = useMotionTag(as)
   const variants: Variants = {
     hidden: { opacity: 0, y: reduce ? 0 : y },
     show: { opacity: 1, y: 0, transition: { duration: reduce ? 0.2 : 0.65, ease: EASE } },

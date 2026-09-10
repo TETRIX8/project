@@ -13,7 +13,7 @@ export type SiteImage = {
 
 const CDN = 'https://static.tildacdn.com'
 
-export const images = {
+const imageRegistry = {
   portraitDesk: {
     src: `${CDN}/tild3963-3734-4332-b035-306331306661/top_tatiana2.jpg`,
     alt: 'Татьяна Бочкарева за рабочим столом с открытой книгой',
@@ -115,4 +115,6 @@ export const images = {
   },
 } satisfies Record<string, SiteImage>
 
-export type ImageKey = keyof typeof images
+export type ImageKey = keyof typeof imageRegistry
+
+export const images: Record<ImageKey, SiteImage> = imageRegistry

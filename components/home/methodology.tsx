@@ -6,17 +6,17 @@ import { methodology } from '@/lib/content/services'
 import { SectionHeading } from '@/components/site/section-heading'
 import { Stagger, StaggerItem } from '@/components/motion/reveal'
 
-export function Methodology() {
+export function Methodology({ index = '04' }: { index?: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const reduce = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 80%', 'end 60%'] })
   const progress = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
-    <section id="method" data-section="04" className="bg-background text-foreground border-b border-border">
+    <section id="method" data-section={index} className="bg-background text-foreground border-b border-border">
       <div className="container-x py-20 sm:py-28 flex flex-col gap-14">
         <SectionHeading
-          index="04"
+          index={index}
           eyebrow="Методология"
           title="Путь проекта: от исходных данных до ввода в эксплуатацию"
           lead="Шесть этапов, на каждом из которых снижаются риски, соблюдаются нормативные требования и экономятся время и деньги заказчика."

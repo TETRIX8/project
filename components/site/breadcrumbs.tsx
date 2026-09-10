@@ -3,7 +3,8 @@ import { Fragment } from 'react'
 
 export type Crumb = { href?: string; label: string }
 
-export function Breadcrumbs({ items }: { items: Crumb[] }) {
+export function Breadcrumbs({ items: rawItems }: { items: Crumb[] }) {
+  const items = rawItems[0]?.href === '/' ? rawItems.slice(1) : rawItems
   return (
     <nav aria-label="Хлебные крошки" className="text-technical text-muted-foreground">
       <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
