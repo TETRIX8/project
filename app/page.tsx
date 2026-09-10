@@ -1,47 +1,81 @@
-export default function Page() {
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
+import { siteConfig } from '@/lib/site-config'
+import { images } from '@/lib/content/images'
+import { Hero } from '@/components/home/hero'
+import { Trust } from '@/components/home/trust'
+import { ServicesList } from '@/components/home/services-list'
+import { Methodology } from '@/components/home/methodology'
+import { ExpertSection } from '@/components/home/expert'
+import { SectionIndicator } from '@/components/home/section-indicator'
+import { SectionHeading } from '@/components/site/section-heading'
+import { PublicationsGrid } from '@/components/site/publications-grid'
+import { Gallery } from '@/components/site/gallery'
+import { CtaSection } from '@/components/site/cta-section'
+import { Reveal } from '@/components/motion/reveal'
+
+export const metadata: Metadata = {
+  title: `${siteConfig.brand.name} — юридический и градостроительный консалтинг`,
+  description:
+    'Юридический консалтинг в градостроительстве: сопровождение инвестиционных строительных проектов, градостроительная документация, редевелопмент территорий, правовая помощь застройщикам и инвесторам. Москва.',
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: `${siteConfig.brand.name} — юридический и градостроительный консалтинг`,
+    description:
+      'Комплексная реализация инвестиционных строительных проектов: градостроительный консалтинг, юридическое сопровождение, градостроительная документация, редевелопмент.',
+    url: '/',
+    images: [{ url: images.portraitDesk.src, width: images.portraitDesk.width, height: images.portraitDesk.height, alt: images.portraitDesk.alt }],
+  },
+}
+
+export default function HomePage() {
   return (
-    <main
-      style={{
-        colorScheme: 'light dark',
-        position: 'relative',
-        display: 'flex',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'light-dark(#fff, #000)',
-        color: 'light-dark(#000, #fff)',
-      }}
-    >
-      <svg
-        aria-hidden="true"
-        style={{ width: 80, height: 80 }}
-        width={80}
-        height={80}
-        fill="none"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
-        strokeWidth="0.5"
-      >
-        <path
-          d="M14.2 14.2H17V6.9375C17 4.76288 15.2371 3 13.0625 3H5.8V5.8M14.2 14.2V7.79063L7.79062 14.2H14.2ZM14.2 14.2V17H6.9375C4.76288 17 3 15.2371 3 13.0625V5.8H5.8M5.8 5.8V12.2313L12.2313 5.8H5.8Z"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 'calc(50% + 56px)',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'light-dark(#71717a, #a1a1aa)',
-        }}
-      >
-        Your v0 generation will show here.
-      </p>
+    <main id="main" className="flex flex-col">
+      <SectionIndicator total={8} />
+      <Hero />
+      <Trust />
+      <ServicesList />
+      <Methodology />
+      <ExpertSection />
+
+      <section id="publications" data-section="06" className="bg-background text-foreground border-b border-border">
+        <div className="container-x py-20 sm:py-28 flex flex-col gap-14">
+          <SectionHeading
+            index="06"
+            eyebrow="Публикации и профессиональная деятельность"
+            title="Форумы, статьи, книги и соглашения"
+            lead="Материалы о международных форумах, профессиональных инициативах и авторские статьи о градостроительном консалтинге."
+          />
+          <PublicationsGrid limit={6} extraFilters={[{ label: 'Документы и сертификаты', href: '/documents' }]} />
+          <Reveal className="flex">
+            <Link href="/publications" className="inline-flex items-center gap-2 text-sm link-underline">
+              Все публикации
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="gallery" data-section="07" className="bg-background text-foreground border-b border-border">
+        <div className="container-x py-20 sm:py-28 flex flex-col gap-14">
+          <SectionHeading
+            index="07"
+            eyebrow="Изображения и документы"
+            title="Мероприятия, благодарности, портреты"
+            lead="Фотографии с форумов, благодарственные письма и портреты. Нажмите на изображение, чтобы открыть полноэкранный просмотр."
+          />
+          <Gallery />
+          <Reveal className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 text-sm text-muted-foreground">
+            <Link href="/projects" className="inline-flex items-center gap-2 link-underline text-foreground">
+              Вся профессиональная деятельность
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+
+      <CtaSection index="08" />
     </main>
   )
 }
