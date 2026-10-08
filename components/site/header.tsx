@@ -79,10 +79,10 @@ export function SiteHeader() {
           open && 'theme-dark bg-background border-transparent',
         )}
       >
-        <div className="container-x flex items-center justify-between h-16 sm:h-20">
+        <div className="container-x flex items-center justify-between gap-4 h-16 sm:h-20">
           <Logo />
 
-          <nav aria-label="Основная навигация" className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <nav aria-label="Основная навигация" className="hidden xl:flex items-center gap-5 2xl:gap-8">
             {siteConfig.nav.map((item) => {
               const active = pathname === item.href || pathname.startsWith(item.href + '/')
               return (
@@ -104,7 +104,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-2 sm:gap-4">
             <a
               href={siteConfig.contact.phoneHref}
-              className="hidden md:max-lg:inline-flex xl:inline-flex items-center gap-2 text-sm tabular-nums whitespace-nowrap link-underline"
+              className="hidden md:max-xl:inline-flex 2xl:inline-flex items-center gap-2 text-sm tabular-nums whitespace-nowrap link-underline"
             >
               <Phone className="size-3.5" aria-hidden="true" />
               {siteConfig.contact.phone}
@@ -123,7 +123,7 @@ export function SiteHeader() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? 'Закрыть меню' : 'Открыть меню'}
-              className="lg:hidden inline-flex items-center justify-center size-10 -mr-2 rounded-sm"
+              className="xl:hidden inline-flex items-center justify-center size-10 -mr-2 rounded-sm"
             >
               <span className="relative block w-6 h-3.5" aria-hidden="true">
                 <span

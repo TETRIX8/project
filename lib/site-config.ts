@@ -33,8 +33,15 @@ export const siteConfig = {
     { href: '/projects', label: 'Деятельность' },
     { href: '/publications', label: 'Публикации' },
     { href: '/documents', label: 'Документы' },
+    { href: '/participation', label: 'Участие' },
     { href: '/contacts', label: 'Контакты' },
   ],
+  participation: {
+    /** PDF presentation of the residency programme (lives in /public). */
+    presentationUrl: '/documents/residency-presentation.pdf',
+    /** Tatyana's work inbox for residency and legislative-initiative applications. Override with PARTICIPATION_TO_EMAIL. */
+    formRecipient: 'info@legal-urban.ru',
+  },
   /** Recipient of contact-form submissions. Override with CONTACT_TO_EMAIL. */
   formRecipient: 'gradpravo_aso@mail.ru',
 } as const

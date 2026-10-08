@@ -14,6 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/projects`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/publications`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/documents`, lastModified: now, changeFrequency: 'yearly', priority: 0.5 },
+    { url: `${base}/participation`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/participation/residency`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/participation/residency/apply`, lastModified: now, changeFrequency: 'yearly', priority: 0.6 },
+    { url: `${base}/participation/initiative`, lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${base}/participation/initiative/apply`, lastModified: now, changeFrequency: 'yearly', priority: 0.6 },
     { url: `${base}/contacts`, lastModified: now, changeFrequency: 'yearly', priority: 0.8 },
   ]
 
